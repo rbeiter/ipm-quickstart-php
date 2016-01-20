@@ -11,6 +11,7 @@ $identity = randomUsername();
 
 // A device ID is passed as a query string parameter to this script
 $deviceId = $_GET['device'];
+$pushCredentialSid = $_GET['push_credential_sid'];
 
 // The endpoint ID is a combination of the above
 $endpointId = $appName . ':' . $identity . ':' . $deviceId;
@@ -28,6 +29,9 @@ $token = new Services_Twilio_AccessToken(
 $ipmGrant = new Services_Twilio_Auth_IpMessagingGrant();
 $ipmGrant->setServiceSid($TWILIO_IPM_SERVICE_SID);
 $ipmGrant->setEndpointId($endpointId);
+if (!empty($pushCredentialSid)) {
+    $ipmGrant->setPushCredentialSid($pushCredentialSid);
+}
 
 // Add grant to token
 $token->addGrant($ipmGrant);
